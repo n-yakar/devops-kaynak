@@ -23,7 +23,6 @@ Etkin terminal kullanımı:
 * Process monitoring commands: ps, top, lsof
 * Vim text editor
 * Text görüntüleme: cat, ned, grep, sort
-* 
 
 Networking:
 * Proxy
