@@ -1,0 +1,195 @@
+Konteynerler, genellikle Linux tabanlı bir işletim sistemi olan ana işletim sistemi 
+üzerine inşa edilir. Bu, konteynerin ana işletim sistemiyle aynı çekirdeği paylaştığı, 
+ancak kendi izole dosya sistemi ve işlem alanına sahip olduğu anlamına gelir.
+
+Bir konteyneri çalıştırdığınızda, ana işletim sistemiyle aynı sistem çağrılarını 
+ve kütüphaneleri kullanır, bu nedenle bir Dockerfile veya konteyneri çalıştırırken 
+chmod, chown ve groupadd gibi Linux komutlarını kullanabilirsiniz, çünkü konteyner, 
+Linux tabanlı bir işletim sistemi üzerinde çalışıyor.
+
+
+
+Nazlıcan Yakar
+Ben Windows kullanıyorum ama konteynerları çalıştırdığımda Linux CLI komutlarını 
+kullanıyorum ve her zaman başarılı oluyor. Bu nedenle, Docker'ın icadından bu yana 
+oluşturulan her konteynerin Linux tabanlı olacağını varsayabilir miyim?
+
+Evet, doğru! Docker'ın çalıştırıldığı platforma bakılmaksızın, her Docker konteyneri 
+bir Linux tabanlı işletim sistemi üzerine inşa edilmiştir.
+
+Windows veya macOS'ta Docker çalıştırdığınızda, aslında "Hyper-V" (Windows'ta) veya 
+"xhyve" (macOS'ta) adlı hafif bir sanallaştırma teknolojisini kullanarak arka planda 
+bir Linux sanal makinesi çalıştırır. Docker konteynerleri daha sonra bu Linux sanal 
+makinesinde çalıştırılır ve Linux tabanlı konteynerleri çalıştırmak için gereken 
+Linux çekirdeği özelliklerini sağlar.
+
+Bu nedenle, Windows'ta Docker çalıştırsanız bile, konteyner Linux tabanlı bir işletim 
+sistemi üzerinde çalıştığından, bir konteyner içinde Linux CLI komutlarını kullanabilirsiniz.
+
+
+
+Nazlıcan Yakar
+Eğer bir uygulamam var - bir .exe dosyası - windows bilgisayarlar için hedeflenmiş 
+ise, bu işlevsel olur mu?
+
+Docker konteynerleri genellikle Linux tabanlı uygulamaları çalıştırmak için tasarlanmış 
+olsa da, Windows tabanlı uygulamaları da Windows konteynerinde çalıştırabilirsiniz.
+
+Bir Windows konteyneri çalıştırmak için, Windows çalıştıran bir Docker ana bilgisayarı 
+kullanmanız ve mcr.microsoft.com/dotnet/framework/runtime:4.8-windowsservercore-ltsc2019 
+gibi Windows tabanlı bir imaj belirten bir Dockerfile kullanmanız gerekiyor.
+
+Ardından konteyneri oluşturabilir ve uygun komutları kullanarak konteyner içindeki 
+Windows tabanlı uygulamayı çalıştırabilirsiniz.
+
+Dolayısıyla, Windows bilgisayarlar için hedeflenmiş bir .exe dosyanız varsa, bunu 
+potansiyel olarak bir Windows konteynerinde paketleyebilir ve Windows tabanlı bir 
+Docker ana bilgisayarı üzerinde çalıştırabilirsiniz. Ancak, konteynerin .exe dosyasını 
+çalıştırmayı ve gerektiği gibi bağımlılıklarını desteklemek için doğru şekilde yapılandırıldığından 
+emin olmanız gerekecektir.
+
+
+
+Nazlıcan Yakar
+
+Bunu yaptığımda, konteyner, windows uygulamasını çalıştırmak isteyebilecek olan 
+windows kullanıcıları için bir GUI sağlar mı?
+
+Varsayılan olarak, Docker konteynerleri, Windows uygulamalarını çalıştırmak için 
+bir grafiksel kullanıcı arayüzü (GUI) sağlamaz.
+
+Ancak, Windows konteynerleri için GUI etkinleştirmek için çeşitli teknikleri kullanabilirsiniz. 
+Yaygın bir yaklaşım, bir Windows makinesinden konteynere RDP kullanarak bağlanmak 
+ve konteynerde yüklü GUI uygulamalarını kullanmaktır. Başka bir yaklaşım, GUI uygulamasını 
+Windows ana bilgisayarında çalıştırmak ve çıktıyı konteynerde görüntülemek için 
+VcXsrv veya Xming gibi bir araç kullanmaktır.
+
+Windows konteynerleri için GUI etkinleştirmek, bir konsol tabanlı uygulama çalıştırmaktan 
+daha karmaşık olabilir ve ek yapılandırma ve kurulum gerektirebilir. Ayrıca, konteyner 
+içindeki GUI uygulamalarının performansı, bunları doğrudan bir Windows makinede 
+çalıştırmaktan daha iyi olmayabilir.
+
+
+
+Nazlıcan Yakar
+Ana amacım, donanım tasarımı için bir test uygulaması üretmek. Belirli bir görev 
+için programlanmış bir mikrodenetleyici var, örneğin bir füze başı, ve ben onu test 
+etmek için bir uygulama geliştiriyorum. Ayrıca o uygulamanın daha iyi bir kullanıcı 
+deneyimi için bir GUI'si olmasını istiyorum ve ayrıca maliyeti, disk kullanımı ve 
+bellek açısından azaltmak için bir konteyner içinde çalıştırmak istiyorum. Bu mümkün 
+mü?
+
+Evet, donanım tasarımı için bir GUI'ye sahip bir test uygulaması geliştirmek ve 
+bunu bir konteyner içinde çalıştırmak maliyetleri azaltmak için mümkündür.
+
+Bunu yapmak için, farklı işletim sistemlerinde çalışabilen bir GUI'ye sahip uygulamalar 
+oluşturmanıza olanak tanıyan bir çapraz platform uygulama geliştirme çerçevesi olan 
+Qt gibi bir araç kullanabilirsiniz.
+
+Qt'yi kullanarak test uygulamanızı geliştirebilir ve ardından uygulamanızı bir konteyner 
+içinde çalıştırmak için gerekli bağımlılıkları ve yapılandırmayı belirten bir Dockerfile 
+oluşturabilirsiniz. Daha sonra Dockerfile'dan bir imaj oluşturabilir ve uygulamanızı 
+test etmek için o imajdan konteynerler çalıştırabilirsiniz.
+
+Uygulamanızı bir konteyner içinde çalıştırmak, uygulamanızı ve bağımlılıklarını 
+ana sistem ve diğer uygulamalardan izole etmenize ve çatışmaları önlemenize ve sistem 
+çökmeleri veya kesintiler riskini azaltmanıza yardımcı olarak maliyetlerinizi azaltmanıza 
+yardımcı olabilir. Ek olarak, konteynerler hafiftir ve kolayca dağıtılabilir ve 
+ölçeklendirilebilir, bu da kaynak kullanımınızı optimize etmenize ve maliyetlerinizi 
+azaltmanıza yardımcı olabilir.
+
+
+
+Nazlıcan Yakar
+Bu container bir GUI'ye sahip olacak mı?
+Evet, Docker container'ında GUI olması mümkündür. Bunun için, GNOME veya Xfce gibi 
+bir masaüstü ortamı olan Ubuntu gibi bir grafik ortamını içeren bir temel görüntü 
+kullanabilirsiniz.
+
+Daha sonra, uygulamanız için gerekli olan kütüphaneler ve çerçeveler gibi bağımlılıkları 
+yükleyebilir ve nihayetinde uygulamanızı konteynır içinde yükleyebilirsiniz.
+
+GUI'nin ana makinede görüntülenebilmesi için, grafik uygulamalarının uzaktaki bir 
+makinede görüntülenebilmesini sağlayan X11 sunucusu kullanmanız gerekecektir. Örneğin, 
+bir Linux ana bilgisayarda, sistemle birlikte gelen X11 sunucusunu kullanabilir 
+veya Windows'ta Xming veya VcXsrv gibi üçüncü taraf bir X11 sunucusu yükleyebilirsiniz.
+
+Ardından, konteynırı --env seçeneğiyle başlatarak DISPLAY ortam değişkenini ana 
+makinede çalışan X11 sunucusunun IP adresine ayarlayabilirsiniz. Bu, konteyner içinde 
+çalışan uygulamanın GUI'sunun ana makinede görüntülenmesine izin verecektir.
+
+Ancak, bir konteyner içinde GUI çalıştırmak, bir komut satırı uygulamasını çalıştırmaktan 
+daha fazla kaynak tüketebilir ve daha fazla bellek ve işlem gücü gerektirebilir.
+
+
+
+burada amacına ulaşmak için izlenecek adımlar şunlardır:
+
+Uygulamanı geliştir: Tercih ettiğin programlama dili ve araçlarla uygulamanı geliştir 
+ve Windows işletim sistemiyle uyumlu olduğundan emin ol.
+
+Windows konteyner imajı oluştur: Windows'u temel işletim sistemi olarak içeren ve 
+uygulamanın çalışması için gerekli tüm bağımlılıkları yükleyen bir konteyner imajı 
+nasıl oluşturulacağını tanımlayan bir Dockerfile oluştur.
+
+Grafiksel kullanıcı arayüzü (GUI) oluştur: Uygulaman için GUI oluşturmak için birçok 
+farklı çerçeve ve araç kullanabilirsin. Bazı popüler seçenekler arasında Windows 
+Forms, WPF ve Qt yer almaktadır. Ayrıca React veya Angular gibi web tabanlı bir 
+çerçeve kullanarak tarayıcı tabanlı bir GUI oluşturabilirsin.
+
+Konteyner imajını oluştur: Dockerfile'ınızı oluşturduktan ve uygulamanızı ve GUI'nizi 
+ekledikten sonra, docker build komutunu kullanarak konteyner imajını oluşturabilirsiniz. 
+Sonuçta oluşan imaj uygulamanızı ve GUI'nizi, ayrıca bunları çalıştırmak için gereken 
+tüm bağımlılıkları içerecektir.
+
+Konteyner imajını test et: Konteyner imajınızı oluşturduktan sonra, uygulamanızın 
+ve GUI'nizin beklediğiniz gibi çalıştığından emin olmak için test edebilirsiniz. 
+Bunun için docker run komutunu kullanarak konteyneri çalıştırabilir ve uzak bir 
+masaüstü bağlantısı kullanarak buna bağlanabilirsiniz.
+
+Konteyner imajını bir kayıt defterine yükleyin: Konteyner imajınızı test ettiyseniz 
+ve doğru çalıştığından eminseniz, Docker Hub veya özel bir kayıt defteri gibi bir 
+konteyner kayıt defterine yükleyebilirsiniz.
+
+Konteyneri dağıt: Son olarak, konteyner imajınızı, donanım tasarımınızı test etmek 
+için kullanılabileceği üretim ortamınıza dağıtabilirsiniz.
+
+GUI uygulamaları için konteyner geliştirmek, pencere yönetimi ve görüntü çözünürlüğü 
+gibi konuları düşünmeniz gerektiğinden, bir komut satırı uygulaması geliştirmekten 
+daha zor olabilir. Ayrıca, GUI uygulamanızı konteyner içinde çalıştırabilecek bir 
+sanal makine oluşturmak gibi özel bir araç kullanmanız gerekebilir, örneğin VirtualBox.
+
+
+
+3. adımı şimdi açıklayalım. Nasıl yapılır?
+Docker konteynerinde çalışan Windows uygulamanız için bir GUI oluşturmak için "X11 
+yönlendirmesi" adı verilen bir teknoloji kullanmanız gerekecektir. Bu teknoloji, 
+Docker konteynerinde çalışan uygulamanızın GUI'sini ana makinenizde görüntülemenize 
+olanak tanır.
+
+İşte kurulumu nasıl yapabileceğinize dair adımlar:
+
+Ana makinenize bir X sunucusu yükleyin. Bu yazılım, Docker konteynerinden gelen 
+GUI çıktısını alacak ve makinenizde görüntüleyecektir. Windows için popüler X sunucuları 
+arasında Xming, VcXsrv ve MobaXterm bulunur.
+
+X sunucusunu ana makinenizde başlatın. Bu, Docker konteynerinde çalışan uygulamanızın 
+GUI'si için ekran olarak hizmet edecek bir pencere açacaktır.
+
+Docker konteynerinizi başlatırken, GUI çıktısını nereye göndereceğini söylemek için 
+DISPLAY ortam değişkenini geçirin. Bunun için -e bayrağını kullanabilirsiniz:
+
+css
+Kod örneği
+docker run -e DISPLAY=<host_ip>:0 my-image
+<host_ip> 'yi ana makinenizin IP adresiyle değiştirin.
+
+Uygulamanızın GUI'si için gerekli olan tüm bağımlılıkları Docker konteynerinin içine 
+yükleyin. Bu, bir masaüstü ortamı, pencere yöneticisi ve gerekli GUI kütüphanelerini 
+içerebilir.
+
+Uygulamanızı Docker konteynerinin içinden başlatın ve GUI'si ana makinenizdeki X 
+sunucusu penceresinde görünmelidir.
+
+X11 yönlendirmesi, Docker konteynerinize bazı ek yükler ekleyebileceğinden, daha 
+karmaşık GUI uygulamalarıyla gecikme veya yavaş performans yaşayabilirsiniz.
